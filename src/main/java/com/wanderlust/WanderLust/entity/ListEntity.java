@@ -52,7 +52,7 @@ public class ListEntity extends AuditField implements Serializable {
     private boolean active=true;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name = "user_id")
     @JsonBackReference
     private UserEntity user;
 
