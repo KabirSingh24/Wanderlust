@@ -56,7 +56,7 @@
         </form></div>
         <div class="col-8 offset-3 mb-3 mt-4">
             <hr>
-            <div th:if="${session.LOGGED_USER_ID != null and selectedList.user != null and session.LOGGED_USER_ID != selectedList.user.id}">
+            <div th:if="${selectedList.user == null or session.LOGGED_USER_ID != selectedList.user.id}">
             <h4>Leave a Review</h4>
             <form th:action="@{/reviews/add/{listingId}(listingId=${selectedList.id})}"
                   th:object="${newReview}" method="post" novalidate class="needs-validation">
