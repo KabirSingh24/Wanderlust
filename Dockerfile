@@ -23,4 +23,4 @@ ENV PORT=8080
 EXPOSE $PORT
 
 # Run the jar file
-CMD ["java", "-jar", "target/wanderlust-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "target/WanderLust-0.0.1-SNAPSHOT.jar"]
