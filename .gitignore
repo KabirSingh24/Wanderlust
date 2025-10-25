@@ -1,0 +1,9 @@
+# Maven build folder
+/target/
+
+# IDE files
+/.idea/
+/*.iml
+
+# Sensitive configs
+/src/main/resources/application.properties
