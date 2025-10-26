@@ -32,6 +32,7 @@ public class WebSecurityConfig {
 
                         // 🆓 Public routes below
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/**").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/uploads/**").permitAll()
                         .requestMatchers("/listings/**").permitAll()
