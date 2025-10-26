@@ -69,4 +69,24 @@ public class JwtService {
         return userRepo.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found for token"));
     }
+
+    public boolean isTokenExpired(String token) {
+        try {
+            Date expiration = extractExpiration(token);
+            return expiration.before(new Date());
+        } catch (Exception e) {
+            return true; // Treat parsing errors as expired
+        }
+    }
+
+    private Date extractExpiration(String token) {
+        Claims clamis= Jwts.parser()
+                .verifyWith(getSecretKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        return clamis.getExpiration();
+    }
+
 }
