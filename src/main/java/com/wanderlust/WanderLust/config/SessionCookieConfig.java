@@ -12,24 +12,6 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
 import java.time.Duration;
 import java.util.concurrent.ConcurrentHashMap;
 
-//@Configuration
-//@EnableJdbcHttpSession
-//public class SessionCookieConfig {
-//
-//    @Bean
-//    public CookieSerializer cookieSerializer(){
-//        DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-//        serializer.setCookieName("wanderlust_cookie"); // custom cookie name
-//        serializer.setCookiePath("/");
-//        serializer.setCookieMaxAge(60 * 60); // 1 hour
-//        serializer.setUseHttpOnlyCookie(true);
-//        serializer.setSameSite("Lax");
-//        serializer.setUseSecureCookie(false); // false for localhost
-//        System.out.println("CookieSerializer bean loaded — custom cookie config applied!");
-//        return serializer;
-//    }
-//}
-
 @Configuration
 @EnableJdbcHttpSession
 public class SessionCookieConfig {
@@ -38,8 +20,8 @@ public class SessionCookieConfig {
     public CookieSerializer cookieSerializer(){
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
         serializer.setCookieName("wanderlust_cookie"); // custom cookie name
-        serializer.setCookiePath("/"); // applies for all paths
-        serializer.setCookieMaxAge(-1); // session cookie → removed when browser closes
+        serializer.setCookiePath("/");
+        serializer.setCookieMaxAge(60 * 60); // 1 hour
         serializer.setUseHttpOnlyCookie(true);
         serializer.setSameSite("Lax");
         serializer.setUseSecureCookie(false); // false for localhost

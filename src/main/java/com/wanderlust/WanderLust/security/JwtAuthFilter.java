@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -51,6 +52,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 }
             }
 
+            if (token != null && !jwtService.isTokenValid(token)) {
+                // Token invalid → clear cookies/session and redirect
+                clearCookies(request, response);
+                response.sendRedirect("/listings/all");
+                return;
+            }
+
         // 3 If token found, validate and set authentication
             if (token != null) {
                 String email = jwtService.getUsernameFromToken(token);
@@ -72,5 +80,22 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         } catch (Exception e) {
         handlerExceptionResolver.resolveException(request, response, null, e);
         }
+    }
+
+    private void clearCookies(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        if (session != null) session.invalidate();
+
+        Cookie jwtCookie = new Cookie("wanderlust", "");
+        jwtCookie.setPath("/");
+        jwtCookie.setHttpOnly(true);
+        jwtCookie.setMaxAge(0);
+        response.addCookie(jwtCookie);
+
+        Cookie sessionCookie = new Cookie("wanderlust_cookie", "");
+        sessionCookie.setPath("/");
+        sessionCookie.setHttpOnly(true);
+        sessionCookie.setMaxAge(0);
+        response.addCookie(sessionCookie);
     }
 }
