@@ -21,7 +21,7 @@ public class SessionInitFilter extends OncePerRequestFilter {
 
         // You can optionally log session creation
         if (session.isNew()) {
-            System.out.println("✅ New session created: " + session.getId());
+            System.out.println(" New session created: " + session.getId());
         }
 
         // Continue filter chain

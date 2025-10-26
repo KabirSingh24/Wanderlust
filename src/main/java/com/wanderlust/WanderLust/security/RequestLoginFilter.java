@@ -1,20 +1,16 @@
 package com.wanderlust.WanderLust.security;
 
 import com.wanderlust.WanderLust.controller.AuthController;
-import com.wanderlust.WanderLust.error.ApiError;
 import jakarta.servlet.*;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.logging.LogRecord;
+
 
 @Component
 @RequiredArgsConstructor

@@ -18,34 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
-//@Controller
-//@RequiredArgsConstructor
-//@RequestMapping("/reviews")
-//public class ReviewController {
-//
-//    private final ListingService listingService;
-//    private final ReviewService reviewService;
-//
-//    @PostMapping("/add/{listingId}")
-//    public String addReview(@PathVariable Long listingId,
-//                            @Valid @ModelAttribute("newReview") ReviewEntity review,
-//                            BindingResult bindingresult, Model model) {
-//        if(bindingresult.hasErrors()){
-//            model.addAttribute("selectedList",listingService.findById(listingId));
-//            return "listings-detail";
-//        }
-//        reviewService.saveReview(listingId, review);
-//        return "redirect:/listings/" + listingId;
-//    }
-//
-//    @PostMapping("/{listingId}/delete/{reviewId}")
-//    public String deleteReview(@PathVariable Long listingId,@PathVariable Long reviewId) {
-//        reviewService.deleteReview(listingId,reviewId);
-//        return "redirect:/listings/" + listingId;
-//    }
-//}
-
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/reviews")
@@ -78,7 +50,7 @@ public class ReviewController {
         // Also set the listing
         review.setListing(listingService.findById(listingId));
         reviewService.saveReview(listingId, review);
-        redirectAttributes.addFlashAttribute("success", "✅ Review added successfully! Thank you 🙏");
+        redirectAttributes.addFlashAttribute("success", " Review added successfully! Thank you 🙏");
         return "redirect:/listings/"+listingId;
     }
 

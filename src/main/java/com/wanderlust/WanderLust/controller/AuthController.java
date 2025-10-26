@@ -136,7 +136,7 @@ public class AuthController {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    // ✅ Show Signup Page
+    // Show Signup Page
     @GetMapping("/signup")
     public String signupPage(@RequestParam(required = false) String redirect, HttpSession session, Model model) {
         if (session.getAttribute("JWT_TOKEN") != null) {
@@ -148,7 +148,7 @@ public class AuthController {
         return "auth/signup";
     }
 
-    // ✅ Handle Signup
+    // Handle Signup
     @PostMapping("/signup/user")
     public String signupUser(@ModelAttribute("user") UserEntity user,
                              @RequestParam(required = false) String redirect,
@@ -187,12 +187,12 @@ public class AuthController {
             return "redirect:" + redirect;
         }
 
-        // ✅ Redirect after signup
+        // Redirect after signup
         redirectAttributes.addFlashAttribute("success", "Signup Successful — Welcome to Wanderlust!");
         return "redirect:/listings/all";
     }
 
-    // ✅ Show Login Page
+    // Show Login Page
     @GetMapping("/login")
     public String loginPage(@RequestParam(required = false) String redirect, HttpSession session, Model model) {
         if (session.getAttribute("JWT_TOKEN") != null) {
@@ -205,7 +205,7 @@ public class AuthController {
         return "auth/login";
     }
 
-//     ✅ Handle Login
+//    Handle Login
 
     @PostMapping("/login")
     public String login(@ModelAttribute("login") LoginRequest loginRequest,
@@ -218,19 +218,17 @@ public class AuthController {
         try {
             Authentication authentication = authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()) );
             UserDetails userDetails = (UserDetails) authentication.getPrincipal(); UserEntity user = userRepo.findByEmail(loginRequest.getEmail()).orElseThrow();
-            // ✅ Generate JWT
+            //  Generate JWT
             String token = jwtService.generateToken(user);
             session.setAttribute("JWT_TOKEN", token);
             session.setAttribute("LOGGED_USER_ID", user.getId());
-            System.out.println("✅" + token);
-            // ✅ Save cookie
+            //  Save cookie
             Cookie cookie = new Cookie("wanderlust", token);
             cookie.setHttpOnly(true); cookie.setPath("/");
             cookie.setMaxAge(100 * 60*60);
             response.addCookie(cookie);
-            System.out.println("✅" + cookie);
             log.info("Redirect after login: {}", redirect);
-            // ✅ Redirect back to original page (if present)
+            // Redirect back to original page (if present)
             if (redirect != null && !redirect.isEmpty()) {
                 log.info("Redirecting to: {}", redirect);
                 return "redirect:" + redirect;
@@ -244,31 +242,32 @@ public class AuthController {
                     return "error";
         }
     }
-            // ✅ Logout (clear session and cookie)
-            @GetMapping("/logout")
-            public String logout(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
-                HttpSession session = request.getSession(false);
-                if (session != null) {
-                    session.removeAttribute("JWT_TOKEN");
-                    session.removeAttribute("LOGGED_USER_ID");
-                    session.invalidate();
-                }
+    //  Logout (clear session and cookie)
+     @GetMapping("/logout")
+     public String logout(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+         HttpSession session = request.getSession(false);
+         if (session != null) {
+             session.removeAttribute("JWT_TOKEN");
+             session.removeAttribute("LOGGED_USER_ID");
+             session.invalidate();
+         }
 
-                // Delete JWT cookie
-                Cookie jwtCookie = new Cookie("wanderlust", "");
-                jwtCookie.setPath("/");
-                jwtCookie.setHttpOnly(true);
-                jwtCookie.setMaxAge(0);
-                response.addCookie(jwtCookie);
+         // Delete JWT cookie
+         Cookie jwtCookie = new Cookie("wanderlust", "");
+         jwtCookie.setPath("/");
+         jwtCookie.setHttpOnly(true);
+         jwtCookie.setMaxAge(0);
+         response.addCookie(jwtCookie);
 
-                // Delete SESSION cookie (Spring Session)
-                Cookie sessionCookie = new Cookie("SESSION", "");
-                sessionCookie.setPath("/");
-                sessionCookie.setHttpOnly(true);
-                sessionCookie.setMaxAge(0);
-                response.addCookie(sessionCookie);
+         // Delete SESSION cookie (Spring Session)
+         Cookie sessionCookie = new Cookie("SESSION", "");
+         sessionCookie.setPath("/");
+         sessionCookie.setHttpOnly(true);
+         sessionCookie.setMaxAge(0);
+         response.addCookie(sessionCookie);
 
-                redirectAttributes.addFlashAttribute("success", "Log Out Successful!");
-                return "redirect:/listings/all";
-            }
+         redirectAttributes.addFlashAttribute("success", "Log Out Successful!");
+         return "redirect:/listings/all";
+
+     }
 }

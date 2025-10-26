@@ -22,7 +22,7 @@ public class WebSecurityConfig {
         httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // 🔒 Protected routes first
+                        //  Protected routes first
                         .requestMatchers(HttpMethod.GET,"/listings/new").authenticated()
                         .requestMatchers(HttpMethod.POST,"/listings/*/edit/update").authenticated()
                         .requestMatchers(HttpMethod.POST, "/listings/*/delete").authenticated()
@@ -30,7 +30,7 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/reviews/add/*").authenticated()
                         .requestMatchers(HttpMethod.POST,"/reviews/*/delete/*").authenticated()
 
-                        // 🆓 Public routes below
+                        //  Public routes below
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/**").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()

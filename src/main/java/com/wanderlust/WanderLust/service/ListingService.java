@@ -1,18 +1,15 @@
 package com.wanderlust.WanderLust.service;
 
-import com.wanderlust.WanderLust.dto.ListingDto;
 import com.wanderlust.WanderLust.entity.ListEntity;
 import com.wanderlust.WanderLust.mapper.ListingMapper;
 import com.wanderlust.WanderLust.repo.ListingRepo;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 @Service
 @RequiredArgsConstructor

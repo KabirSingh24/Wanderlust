@@ -105,7 +105,7 @@ public class ListingController {
         }
 
         if (jwt == null) {
-            // ✅ No user logged in → store listing in session
+            //  No user logged in → store listing in session
             session.setAttribute("pendingListing", listing);
             redirectAttributes.addFlashAttribute("failure", "You need to signup/login first to save the listing.");
             return "redirect:/auth/signup?redirect=/listings/new";
@@ -121,7 +121,7 @@ public class ListingController {
 
         UserEntity user=jwtService.getUserFromToken(jwt);
         listing.setUser(user);
-        // ✅ Save listing successfully
+        //  Save listing successfully
         listingService.saveList(listing);
         redirectAttributes.addFlashAttribute("success",
                 "Listing added successfully!");
@@ -192,7 +192,7 @@ public class ListingController {
         existingListing.setCountry(listing.getCountry());
         existingListing.setUser(userRepo.findById(loggedUserId).orElseThrow());
         listingService.saveList(existingListing);
-        redirectAttributes.addFlashAttribute("success", "✅ Listing updated successfully!");
+        redirectAttributes.addFlashAttribute("success", "Listing updated successfully!");
         return "redirect:/listings/"+listing.getId();
 
     }

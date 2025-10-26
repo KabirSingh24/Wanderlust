@@ -25,7 +25,7 @@ public class SessionCookieConfig {
         serializer.setUseHttpOnlyCookie(true);
         serializer.setSameSite("Lax");
         serializer.setUseSecureCookie(false); // false for localhost
-        System.out.println("✅ CookieSerializer bean loaded — custom cookie config applied!");
+        System.out.println("CookieSerializer bean loaded — custom cookie config applied!");
         return serializer;
     }
 }
