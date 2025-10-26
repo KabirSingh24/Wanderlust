@@ -91,4 +91,19 @@ public class JwtService {
         return clamis.getExpiration();
     }
 
+    public boolean isTokenValid(String token) {
+        try {
+            Claims claims = Jwts.parser()
+                    .verifyWith(getSecretKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+
+            Date exp = claims.getExpiration();
+            return exp.after(new Date()); // valid if not expired
+        } catch (JwtException | IllegalArgumentException e) {
+            return false; // invalid token
+        }
+    }
+
 }

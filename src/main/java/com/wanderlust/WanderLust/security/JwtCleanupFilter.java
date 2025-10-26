@@ -29,28 +29,41 @@ public class JwtCleanupFilter extends OncePerRequestFilter {
         if (session != null) {
             String token = (String) session.getAttribute("JWT_TOKEN");
 
-            if (token != null && jwtService.isTokenExpired(token)) {
-                // Clear old JWT + session
-                session.invalidate();
-                Cookie jwtCookie = new Cookie("wanderlust", "");
-                jwtCookie.setHttpOnly(true);
-                jwtCookie.setPath("/");
-                jwtCookie.setMaxAge(0);
-                response.addCookie(jwtCookie);
-
-                Cookie sessionCookie = new Cookie("wanderlust_cookie", "");
-                sessionCookie.setHttpOnly(true);
-                sessionCookie.setPath("/");
-                sessionCookie.setMaxAge(0);
-                response.addCookie(sessionCookie);
+            if (token != null) {
+                try {
+                    // ✅ Full validation instead of only expiration
+                    if (!jwtService.isTokenValid(token)) {
+                        clearSessionAndCookies(session, response);
+                        // Redirect to login immediately
+                        response.sendRedirect("/auth/login");
+                        return;
+                    }
+                } catch (Exception e) {
+                    // Token cannot be parsed → clear session/cookies
+                    clearSessionAndCookies(session, response);
+                    response.sendRedirect("/auth/login");
+                    return;
+                }
             }
         }
 
         filterChain.doFilter(request, response);
     }
 
-//    @Override
-//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//
-//    }
+    private void clearSessionAndCookies(HttpSession session, HttpServletResponse response) {
+        if (session != null) session.invalidate();
+
+        Cookie jwtCookie = new Cookie("wanderlust", "");
+        jwtCookie.setHttpOnly(true);
+        jwtCookie.setPath("/");
+        jwtCookie.setMaxAge(0);
+        response.addCookie(jwtCookie);
+
+        Cookie sessionCookie = new Cookie("wanderlust_cookie", "");
+        sessionCookie.setHttpOnly(true);
+        sessionCookie.setPath("/");
+        sessionCookie.setMaxAge(0);
+        response.addCookie(sessionCookie);
+    }
 }
+
