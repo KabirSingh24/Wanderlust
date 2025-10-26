@@ -270,52 +270,6 @@ public class AuthController {
          return "redirect:/listings/all";
 
      }
-//    @GetMapping("/logout")
-//    public String logout(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
-//        HttpSession session = request.getSession(false);
-//
-//        // 🧩 Check and clear expired or invalid JWT
-//        if (session != null) {
-//            String jwtToken = (String) session.getAttribute("JWT_TOKEN");
-//
-//            // If token expired or missing → clear everything and redirect to fresh start
-//            if (jwtToken == null || jwtService.isTokenExpired(jwtToken)) {
-//                clearAllCookiesAndSession(session, response);
-//                session.invalidate();
-//                redirectAttributes.addFlashAttribute("warning", "Session expired. Starting fresh!");
-//                return "redirect:/listings/all";
-//            }
-//
-//            // Normal logout flow
-//            session.removeAttribute("JWT_TOKEN");
-//            session.removeAttribute("LOGGED_USER_ID");
-//            session.invalidate();
-//        }
-//
-//        // Delete cookies
-//        clearAllCookiesAndSession(null, response);
-//        redirectAttributes.addFlashAttribute("success", "Log Out Successful!");
-//        return "redirect:/listings/all";
-//    }
-//
-//    /**
-//     * 🔒 Helper method to clear all cookies and session safely
-//     */
-//    private void clearAllCookiesAndSession(HttpSession session, HttpServletResponse response) {
-//        if (session != null) session.invalidate();
-//
-//        Cookie jwtCookie = new Cookie("wanderlust", "");
-//        jwtCookie.setPath("/");
-//        jwtCookie.setHttpOnly(true);
-//        jwtCookie.setMaxAge(0);
-//        response.addCookie(jwtCookie);
-//
-//        Cookie sessionCookie = new Cookie("SESSION", "");
-//        sessionCookie.setPath("/");
-//        sessionCookie.setHttpOnly(true);
-//        sessionCookie.setMaxAge(0);
-//        response.addCookie(sessionCookie);
-//    }
 
 
 }
