@@ -16,8 +16,10 @@ import java.util.Date;
 
 @Component
 public class JwtService {
+
     @Value("${jwt.secretkey}")
     private  String jwtSecretKey;
+
     private final UserRepo userRepo;
 
     public JwtService(UserRepo userRepo) {

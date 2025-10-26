@@ -193,14 +193,32 @@ public class AuthController {
     }
 
     // Show Login Page
+//    @GetMapping("/login")
+//    public String loginPage(@RequestParam(required = false) String redirect, HttpSession session, Model model) {
+//        if (session.getAttribute("JWT_TOKEN") != null) {
+//            // Already logged in
+//            return "redirect:/listings/all";
+//        }
+//        model.addAttribute("redirect", redirect);
+//        log.info("Login page loaded with redirect={}", redirect);
+//        model.addAttribute("login", new LoginRequest());
+//        return "auth/login";
+//    }
+
+
     @GetMapping("/login")
-    public String loginPage(@RequestParam(required = false) String redirect, HttpSession session, Model model) {
-        if (session.getAttribute("JWT_TOKEN") != null) {
-            // Already logged in
-            return "redirect:/listings/all";
+    public String loginPage(HttpSession session, HttpServletResponse response, Model model) {
+        String token = (String) session.getAttribute("JWT_TOKEN");
+        if (token != null && jwtService.isTokenExpired(token)) {
+            // Clear session & cookie
+            session.invalidate();
+            Cookie jwtCookie = new Cookie("wanderlust", "");
+            jwtCookie.setHttpOnly(true);
+            jwtCookie.setPath("/");
+            jwtCookie.setMaxAge(0);
+            response.addCookie(jwtCookie);
         }
-        model.addAttribute("redirect", redirect);
-        log.info("Login page loaded with redirect={}", redirect);
+
         model.addAttribute("login", new LoginRequest());
         return "auth/login";
     }
