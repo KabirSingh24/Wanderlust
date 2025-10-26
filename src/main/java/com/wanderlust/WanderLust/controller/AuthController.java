@@ -281,6 +281,7 @@ public class AuthController {
             // If token expired or missing → clear everything and redirect to fresh start
             if (jwtToken == null || jwtService.isTokenExpired(jwtToken)) {
                 clearAllCookiesAndSession(session, response);
+                session.invalidate();
                 redirectAttributes.addFlashAttribute("warning", "Session expired. Starting fresh!");
                 return "redirect:/listings/all";
             }
