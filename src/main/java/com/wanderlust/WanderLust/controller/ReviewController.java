@@ -33,14 +33,14 @@ public class ReviewController {
                             @Valid @ModelAttribute("newReview") ReviewEntity review,
                             BindingResult bindingResult, RedirectAttributes redirectAttributes,Model model,
                             HttpSession session) {
-        Long loggedUserId = (Long) session.getAttribute("LOGGED_USER_ID");
-        if (loggedUserId == null) {
-            return "redirect:/auth/login?redirect=/reviews/" + listingId + "/add";
-        }
         if (bindingResult.hasErrors()) {
             model.addAttribute("selectedList", listingService.findById(listingId));
             redirectAttributes.addFlashAttribute("failure","Reviews Not Added Please Try Again We Appreciate Your Efforts");
             return "listings-detail";
+        }
+        Long loggedUserId = (Long) session.getAttribute("LOGGED_USER_ID");
+        if (loggedUserId == null) {
+            return "redirect:/auth/login?redirect=/listings/" + listingId;
         }
 
         UserEntity user = userRepo.findById(loggedUserId)
