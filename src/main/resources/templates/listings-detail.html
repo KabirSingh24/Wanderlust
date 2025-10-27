@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/header :: head(selectedList.title)}">
+<head th:replace="~{fragments/header :: head(Wander_detail)}">
 </head>
 <body>
 <div th:replace="~{fragments/header :: navbar}"></div>
@@ -57,6 +57,7 @@
             <hr>
             <div th:if="${selectedList.user == null or session.LOGGED_USER_ID != selectedList.user.id}">
             <h4>Leave a Review</h4>
+            <div th:if="${session.LOGGED_USER_ID != null}">
             <form th:action="@{/reviews/add/{listingId}(listingId=${selectedList.id})}"
                   th:object="${newReview}" method="post" novalidate class="needs-validation">
                 <div class="mb-3 mt-3">
@@ -83,6 +84,13 @@
                 </div>
                 <button type="submit" class="btn btn-success">Submit Review</button>
             </form>
+            </div>
+            <div th:if="${session.LOGGED_USER_ID == null}">
+                    <a th:href="@{/auth/login(redirect=${'/listings/' + selectedList.id})}"
+                       class="btn btn-warning">
+                        🔒 Log in to leave a review
+                    </a>
+            </div>
             </div>
             <hr>
 
