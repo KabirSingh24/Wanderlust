@@ -18,9 +18,6 @@ RUN chmod +x mvnw
 # Build the project
 RUN ./mvnw clean package -DskipTests
 
-# Force rebuild cache
-ARG CACHE_BREAKER=1
-
 # Expose the port (Render will use $PORT)
 ENV PORT=8080
 EXPOSE $PORT
